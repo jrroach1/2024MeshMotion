@@ -102,7 +102,7 @@ def test_derivatives():
     dxdx_cs, dxdy_cs, dxdt_cs, dydx_cs, dydy_cs, dydt_cs = coords_dot(alpha1,x0,y0,t)
 
     # Compute finite-difference derivatives
-    xa,ya         = coords(alpha1,x0,y0,t)
+    xa,ya         = coords(alpha1,x0,       y0,       t       )
     x_xdot,y_xdot = coords(alpha1,x0+fd_eps,y0       ,t       )
     x_ydot,y_ydot = coords(alpha1,x0       ,y0+fd_eps,t       )
     x_tdot,y_tdot = coords(alpha1,x0       ,y0       ,t+fd_eps)
@@ -117,16 +117,47 @@ def test_derivatives():
     dydt_fd = (y_tdot - ya)/fd_eps
 
 
-    print("{: >30} {: >30} {: >30}".format(*[f'Finite-difference(step={fd_eps})', 'Complex-step', 'Error']))
-    print("{: >30} {: >30} {: >30}".format(*[dxdx_fd, dxdx_cs, dxdx_fd - dxdx_cs]))
-    print("{: >30} {: >30} {: >30}".format(*[dxdy_fd, dxdy_cs, dxdy_fd - dxdy_cs]))
-    print("{: >30} {: >30} {: >30}".format(*[dxdt_fd, dxdt_cs, dxdt_fd - dxdt_cs]))
-    print("{: >30} {: >30} {: >30}".format(*[dydx_fd, dydx_cs, dydx_fd - dydx_cs]))
-    print("{: >30} {: >30} {: >30}".format(*[dydy_fd, dydy_cs, dydy_fd - dydy_cs]))
-    print("{: >30} {: >30} {: >30}".format(*[dydt_fd, dydt_cs, dydt_fd - dydt_cs]))
+    print(f"Cylinder2024: Case1 short-time composite motion with deformation extension (x0,y0,t) = ({x0},{y0},{t})")
+    print("{: >30} {: >30} {: >30} {: >30}".format(*[' ', f'Finite-difference(step={fd_eps})', 'Complex-step', 'Error']))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdx',dxdx_fd, dxdx_cs, dxdx_fd - dxdx_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdy',dxdy_fd, dxdy_cs, dxdy_fd - dxdy_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdt',dxdt_fd, dxdt_cs, dxdt_fd - dxdt_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydx',dydx_fd, dydx_cs, dydx_fd - dydx_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydy',dydy_fd, dydy_cs, dydy_fd - dydy_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydt',dydt_fd, dydt_cs, dydt_fd - dydt_cs]))
 
 
-test_derivatives()
+
+    # Compute complex-step derivatives
+    dxdx_cs, dxdy_cs, dxdt_cs, dydx_cs, dydy_cs, dydt_cs = coords_dot(alpha2,x0,y0,t)
+
+    # Compute finite-difference derivatives
+    xa,ya         = coords(alpha2,x0,       y0,       t       )
+    x_xdot,y_xdot = coords(alpha2,x0+fd_eps,y0       ,t       )
+    x_ydot,y_ydot = coords(alpha2,x0       ,y0+fd_eps,t       )
+    x_tdot,y_tdot = coords(alpha2,x0       ,y0       ,t+fd_eps)
+
+    dxdx_fd = (x_xdot - xa)/fd_eps
+    dydx_fd = (y_xdot - ya)/fd_eps
+
+    dxdy_fd = (x_ydot - xa)/fd_eps
+    dydy_fd = (y_ydot - ya)/fd_eps
+
+    dxdt_fd = (x_tdot - xa)/fd_eps
+    dydt_fd = (y_tdot - ya)/fd_eps
+
+    print(" ")
+    print(f"Cylinder2024: Case2 long-time study of conservation. (x0,y0,t) = ({x0},{y0},{t})")
+    print("{: >30} {: >30} {: >30} {: >30}".format(*[' ', f'Finite-difference(step={fd_eps})', 'Complex-step', 'Error']))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdx',dxdx_fd, dxdx_cs, dxdx_fd - dxdx_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdy',dxdy_fd, dxdy_cs, dxdy_fd - dxdy_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dxdt',dxdt_fd, dxdt_cs, dxdt_fd - dxdt_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydx',dydx_fd, dydx_cs, dydx_fd - dydx_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydy',dydy_fd, dydy_cs, dydy_fd - dydy_cs]))
+    print("{: >30} {: >30} {: >30} {: >30}".format(*['dydt',dydt_fd, dydt_cs, dydt_fd - dydt_cs]))
+
+if __name__ == "__main__":
+    test_derivatives()
 
 
 
