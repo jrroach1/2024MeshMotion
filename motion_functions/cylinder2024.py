@@ -1,6 +1,35 @@
 import math
 import cmath
 
+""" Guide for using mesh motion functions
+
+Usage:
+--------------------
+    import cylinder2024
+    x,y,z                         = cylinder2024.coords(    cylinder2024.alpha1,xref,yref,t)
+    dxdx,dxdy,dxdt,dydx,dydy,dydt = cylinder2024.coords_dot(cylinder2024.alpha1,xref,yref,t)
+
+
+Top-level functions:
+--------------------
+    coords
+    coords_dot
+
+
+Low-level functions:
+--------------------
+    c_atan2
+    alpha1
+    alpha2
+    psi
+    eta
+    fg
+    thetag
+
+
+See test_derivatives function for examples of usage.
+
+"""
 
 rcyl        = 0.5
 Atheta      = math.pi
@@ -24,22 +53,66 @@ def c_atan2(y,x):
     b=y.imag
     c=x.real
     d=x.imag
-    return complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
+
+
+    if (a**2+c**2) == 0:
+        x_sign = math.copysign(1,x.real)
+        y_sign = math.copysign(1,y.real)
+
+        a = a + 1.e-12
+        #c = c 
+
+    #    #if x_sign > 0:
+    #    #    if y.imag != 0:
+    #    #        result = complex(math.atan2(a,c),0.)
+    #    #    else:
+    #    #        result = complex(math.atan2(a,c),0.)
+    #    #else:
+    #    result = complex(math.atan2(a,c),-.0000000000001)
+    #    result = complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
+
+    result = complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
+
+    return result
 
 
 def alpha1(t):
+    """ Time activation function for cylinder case1
+
+    short-time composite motion with deformation extension 
+
+    """
     return t*t*t*(8.-3.*t)/16.
 
 def alpha2(t):
+    """ Time activation function for cylinder case2
+
+    long-time composite motion with deformation extension 
+
+    """
     return alpha_max*cmath.sin(omega_alpha*t)*(t**6./(t**6.+tref**6.))
 
 def psi(t,alpha):
     return 1. + (Aa - 1.)*alpha(t)
 
 def eta(lam,omega,tau):
+
     return cmath.sin(omega*lam + tau*(1. - cmath.cos(omega*lam)))
 
 def fg(t,r0,theta0):
+    """ Deformation function for non-unit geometry mapping Jacobian 
+
+    Parameters
+    ----------
+    t: float or complex
+        Time
+    r0: float or complex
+        Reference radius
+    theta0: float or complex
+        Reference theta
+
+
+    """
     return (16.*(r0**4.) + (t**6./(t**6. + 0.01))*eta(t,10.,0.7)*(cmath.cos(32.*cmath.pi*r0**4.) - 1.))*eta(theta0,1.,0.7)
 
 
@@ -48,6 +121,20 @@ def thetag(t,r0,theta0):
 
 
 def coords(alpha,x0,y0,t):
+    """ Return the physical coordinates
+
+    Parameters
+    ----------
+    alpha: function
+        Time-activation function. Definded above (either alpha1 or alpha2)
+    x0: float or complex
+        Reference x-coordinate
+    y0: float or complex
+        Reference y-coordinate
+    t: float or complex
+        time
+
+    """
 
     r0     = cmath.sqrt(x0*x0 + y0*y0)
     theta0 = c_atan2(y0,x0)
@@ -71,21 +158,48 @@ def coords(alpha,x0,y0,t):
 
 
 def coords_dot(alpha,x0,y0,t):
+    """ Return the derivatives of physical coordinates
+
+    Parameters
+    ----------
+    alpha: function
+        Time-activation function. Definded above (either alpha1 or alpha2)
+    x0: float or complex
+        Reference x-coordinate
+    y0: float or complex
+        Reference y-coordinate
+    t: float or complex
+        time
+
+    """
 
     h = 1.e-30
     eps = complex(0.,h)
 
-    # Evaluate function with complex perturbations in x,y,t
-    dxdx,dydx = coords(alpha,x0+eps,y0    ,t    )
-    dxdy,dydy = coords(alpha,x0    ,y0+eps,t    )
-    dxdt,dydt = coords(alpha,x0    ,y0    ,t+eps)
+    # Issues related to the use of atan2 in coords function make the derivative 
+    # at 0,0 undefined. The form of the motion simplifies a bit at (0,0) and we 
+    # hard-code the spatial derivatives here
+    if (x0 == 0) and (y0 == 0):
+        dxdx = psi(t,alpha).real*math.cos(Atheta*alpha(t).real)
+        dxdy = -(1./psi(t,alpha).real)*math.sin(Atheta*alpha(t).real)
+        dydx = psi(t,alpha).real*math.sin(Atheta*alpha(t).real)
+        dydy = (1./psi(t,alpha).real)*math.cos(Atheta*alpha(t).real)
 
-    # Divide imaginary part by step size
-    dxdx = dxdx.imag/h
-    dxdy = dxdy.imag/h
+    # Away from (0,0) we evaluate derivatives via complex-step
+    else:
+        # Evaluate function with complex perturbations in x,y
+        dxdx,dydx = coords(alpha,x0+eps,y0    ,t    )
+        dxdy,dydy = coords(alpha,x0    ,y0+eps,t    )
+
+        # Divide imaginary part by step size
+        dxdx = dxdx.imag/h
+        dxdy = dxdy.imag/h
+        dydx = dydx.imag/h
+        dydy = dydy.imag/h
+
+    # There are no complicating issues for the time derivative, evaluate everywhere with complex-step
+    dxdt,dydt = coords(alpha,x0    ,y0    ,t+eps)
     dxdt = dxdt.imag/h
-    dydx = dydx.imag/h
-    dydy = dydy.imag/h
     dydt = dydt.imag/h
 
     return dxdx, dxdy, dxdt, dydx, dydy, dydt
@@ -93,10 +207,10 @@ def coords_dot(alpha,x0,y0,t):
 
 def test_derivatives():
 
-    x0 = 1.
-    y0 = 0.3
-    t = 1.
-    fd_eps = 1.e-9
+    x0 = -0.0
+    y0 = 0.0
+    t = 0.
+    fd_eps = 1.e-10
 
     # Compute complex-step derivatives
     dxdx_cs, dxdy_cs, dxdt_cs, dydx_cs, dydy_cs, dydt_cs = coords_dot(alpha1,x0,y0,t)
