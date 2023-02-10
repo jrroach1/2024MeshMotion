@@ -54,24 +54,10 @@ def c_atan2(y,x):
     c=x.real
     d=x.imag
 
-
     if (a**2+c**2) == 0:
-        x_sign = math.copysign(1,x.real)
-        y_sign = math.copysign(1,y.real)
-
-        a = a + 1.e-12
-        #c = c 
-
-    #    #if x_sign > 0:
-    #    #    if y.imag != 0:
-    #    #        result = complex(math.atan2(a,c),0.)
-    #    #    else:
-    #    #        result = complex(math.atan2(a,c),0.)
-    #    #else:
-    #    result = complex(math.atan2(a,c),-.0000000000001)
-    #    result = complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
-
-    result = complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
+        result = complex(math.atan2(a,c),0.)
+    else:
+        result = complex(math.atan2(a,c),(c*b-a*d)/(a**2+c**2))
 
     return result
 
@@ -207,8 +193,8 @@ def coords_dot(alpha,x0,y0,t):
 
 def test_derivatives():
 
-    x0 = -0.0
-    y0 = 0.0
+    x0 = 0.5
+    y0 = 0.5
     t = 0.
     fd_eps = 1.e-10
 
