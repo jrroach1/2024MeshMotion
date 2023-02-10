@@ -12,8 +12,8 @@ Usage:
 
 Top-level functions:
 --------------------
-    coords
-    coords_dot
+    coords(alpha,xRef,yRef,t)          : returns (x,y)
+    coords_dot(alpha,xRef,yRef,t)      : returns (dxdx, dxdy, dxdt, dydx, dydy, dydt)
 
 
 Low-level functions:
