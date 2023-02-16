@@ -174,8 +174,8 @@ def coords_dot(alpha,x0,y0,t):
     # Away from (0,0) we evaluate derivatives via complex-step
     else:
         # Evaluate function with complex perturbations in x,y
-        dxdx,dydx = coords(alpha,x0+eps,y0    ,t    )
-        dxdy,dydy = coords(alpha,x0    ,y0+eps,t    )
+        dxdx,dydx = coords(alpha,x0+eps,y0    ,t)
+        dxdy,dydy = coords(alpha,x0    ,y0+eps,t)
 
         # Divide imaginary part by step size
         dxdx = dxdx.imag/h
@@ -184,7 +184,7 @@ def coords_dot(alpha,x0,y0,t):
         dydy = dydy.imag/h
 
     # There are no complicating issues for the time derivative, evaluate everywhere with complex-step
-    dxdt,dydt = coords(alpha,x0    ,y0    ,t+eps)
+    dxdt,dydt = coords(alpha,x0,y0,t+eps)
     dxdt = dxdt.imag/h
     dydt = dydt.imag/h
 
@@ -195,7 +195,7 @@ def test_derivatives():
 
     x0 = 0.5
     y0 = 0.5
-    t = 0.
+    t = 1.
     fd_eps = 1.e-10
 
     # Compute complex-step derivatives
