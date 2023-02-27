@@ -6,7 +6,7 @@ import cmath
 Usage:
 --------------------
     import cylinder2024
-    x,y,z                         = cylinder2024.coords(    cylinder2024.alpha1,xref,yref,t)
+    x,y                           = cylinder2024.coords(    cylinder2024.alpha1,xref,yref,t)
     dxdx,dxdy,dxdt,dydx,dydy,dydt = cylinder2024.coords_dot(cylinder2024.alpha1,xref,yref,t)
 
 
@@ -258,9 +258,5 @@ def test_derivatives():
 
 if __name__ == "__main__":
     test_derivatives()
-
-
-
-
 
 
