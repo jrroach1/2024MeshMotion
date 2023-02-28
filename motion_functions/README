@@ -39,8 +39,8 @@ python cylinder2024.py
 
 Fortran Test
 -----------------------------------
-gfortran F90test.f90 cylinder2024.f90
+gfortran cylinder2024.f90 F90test.f90
 
 C Test
 -----------------------------------
-gcc Ctest.c cylinder2024.c
+gcc cylinder2024.c Ctest.c
