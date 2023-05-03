@@ -14,7 +14,15 @@ If you have already cloned the repository, you can retrieve the 2022 repository 
 git submodule update --init --recursive
 ```
 
-# Working group updates
+# TODO
+- [x] Finalize test suite motions and test cases (SciTech 2024 paper)
+- [ ] Generate family of cylinder meshes (Per)
+- [ ] Set up input format + data-processing (Nathan)
+- [ ] Document appropriate initial conditions for incompressible tests (James)
+- [ ] Preliminary results (All)
+
+
+# Working group notes
 
 ## 5 April, 2023
 
