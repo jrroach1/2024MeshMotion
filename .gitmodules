@@ -1,0 +1,3 @@
+[submodule "2022MeshMotion"]
+	path = 2022MeshMotion
+	url = https://github.com/HighFidelityCFDVerificationWorkshop/2022MeshMotion
