@@ -17,9 +17,9 @@ git submodule update --init --recursive
 # TODO
 - [x] Finalize test suite motions and test cases ([SciTech 2024 paper](https://highfidelitycfdverificationworkshop.github.io/papers/mesh_motion.pdf))
 - [x] Provide mesh motion function implementations and their derivatives in C, Python, and Fortran.
-- [ ] Generate family of cylinder meshes (Per)
+- [x] Generate family of cylinder meshes (Per)
+- [x] Document appropriate initial conditions for incompressible tests (James)
 - [ ] Set up input format + data-processing (Nathan)
-- [ ] Document appropriate initial conditions for incompressible tests (James)
 - [ ] Preliminary results (All)
 
 # Data submission
@@ -36,26 +36,32 @@ AFRL/Airfoil-M1-h0-p0-t0.txt
 ```
 
 ## Data format
-For each contributed Case/Motion/Resolution, we are requesting time-series data for a set of outputs. Time-integrated quantities will be computed in data-processing by the organizers. Time-histories should include the time-history bounds (i.e. data at initial time t=0 and also data at final time t=1,2, or 40 depending on the test case). Time-histories should include the time-value for each time-instance as well as the requested outputs at each time-instance (Outputs are described in Eqns. 14-17 in the test suite document). Each contributed data-file (representative of a particular Case/Motion/Resolution) should be submitted in comma-separated-value format that consists of a single-line header and time-series data on subsequent lines. Time-series data should be provided with at least 8-digits of precision. If a requested output is not able to be provided the entry should be filled with the junk-value 12345678.
+For each contributed Case/Motion/Resolution, we are requesting time-series data for a set of outputs. Time-integrated quantities will be computed in data-processing by the organizers. Time-histories should include the time-history bounds (i.e. data at initial time t=0 and also data at final time t=1,2, or 40 depending on the test case). Time-histories should include the time-value for each time-instance as well as the requested outputs at each time-instance (Outputs are described in Eqns. 14-17 in the test suite document). Each contributed data-file (representative of a particular Case/Motion/Resolution) should be submitted in comma-separated-value format that consists of a single-line header and time-series data on subsequent lines. Optionally, time-integrated quantities may be submitted by participants by adding a data-entry at the end of the file with the time-value set to NaN. Data should be provided with at least 8-digits of precision. If a requested output is not able to be provided the entry should be filled with value NaN.
 
 The data-header should be the following:
 ```
 Time, Y-Force, Work integrand, Mass, Mass error
 ```
 
-An example data file contents for a submission that does not provide 'Mass error' would be:
+An example of data file contents for a submission that does not provide 'Mass error' and additionally provides time-integrated outputs would be:
 ```
 Time, Y-Force, Work integrand, Mass, Mass error
-0.0000000, 1.5438375, 3.4932846, 3.0829579, 12345678.
-0.2000000, 1.5648394, 3.5349762, 3.0830752, 12345678.
-0.4000000, 1.5740924, 3.8028847, 3.0840783, 12345678.
-0.6000000, 1.5638740, 3.4397543, 3.0892051, 12345678.
-0.8000000, 1.5503957, 3.4932846, 3.0913753, 12345678.
-1.0000000, 1.5400933, 3.4932846, 3.0940148, 12345678.
+0.0000000, 1.5438375, 3.4932846, 3.0829579, NaN
+0.2000000, 1.5648394, 3.5349762, 3.0830752, NaN
+0.4000000, 1.5740924, 3.8028847, 3.0840783, NaN
+0.6000000, 1.5638740, 3.4397543, 3.0892051, NaN
+0.8000000, 1.5503957, 3.4932846, 3.0913753, NaN
+1.0000000, 1.5400933, 3.4932846, 3.0940148, NaN
+NaN, 8.2345720, 25.29479238, 28.2984759, NaN
 ```
 
 
 # Working group notes
+
+## 3 May, 2023
+- Discussed updates in data-format and submission guidelines.
+- Per detailed his process for scripting cylinder grids. Group decided to move forward with committing the scripted grid generator as well as a particular family of cylinder meshes for participants to use.
+- Next steps are generating initial results.
 
 ## 5 April, 2023
 
