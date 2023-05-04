@@ -1,20 +1,21 @@
-Overview:
----------
+# Overview:
+
 Cylinder2024 mesh motions are implemented for Python, Fortran, and C in the files cylinder2024.py, cylinder2024.f90, 
 and (cylinder2024.c,cylinder2024.h) respectively.
 
 
-Approach:
----------
+## Approach:
+
 The complex-step method was utilized for computing temporal and spatial derivatives of the prescribed motion 
 functions. As such, in some cases you may need to provide inputs as complex types with zero imaginary component.
 The complex-step method and perturbations are carried out internally and not required by the user, but the user
 does still need to provide inputs as complex-typed variables.
 
 
-Top-level functions/subroutines:
---------------------------------
+## Top-level functions/subroutines:
 
+
+```
 coords      
     (in)  -> (alpha,xref,yref,t)     
     (out) -> (x,y)
@@ -29,18 +30,26 @@ Nomenclature:
     t         -> time for motion to be evaluated at
     dx_dyref  -> derivative of deformed x-coordinate with respect to undeformed (reference) y-coordinate
     dy_dt     -> derivative of deformed y-coordinate with respect to time.
+```
 
 
 
 
-Python Test
------------------------------------
+## Python Test
+
+```
 python cylinder2024.py
+```
 
-Fortran Test
------------------------------------
+## Fortran Test
+
+```
 gfortran cylinder2024.f90 F90test.f90
+```
 
-C Test
------------------------------------
+## C Test
+
+```
 gcc cylinder2024.c Ctest.c
+```
+
