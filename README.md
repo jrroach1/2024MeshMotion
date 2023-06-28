@@ -58,6 +58,11 @@ NaN, 8.2345720, 25.29479238, 28.2984759, NaN
 
 # Working group notes
 
+## 7 June, 2023
+- Cancelled last minute due to connectivity issues.
+- Per noted that second-derivatives of the motion functions are required for some implementations. Maybe our motion implementations need exteneded...
+- Per
+
 ## 3 May, 2023
 - Discussed updates in data-format and submission guidelines.
 - Per detailed his process for scripting cylinder grids. Group decided to move forward with committing the scripted grid generator as well as a particular family of cylinder meshes for participants to use.
