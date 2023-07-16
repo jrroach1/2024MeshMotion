@@ -25,14 +25,26 @@ git submodule update --init --recursive
 # Data submission
 
 ## Data organization
-Groups should submit time-histories for each case (Config,Motion,Order,Space-Res,Time-Res) in separate files following the file location and name convention:
+Groups should submit time-histories for each case (Config,Motion,Grid-Index,SolutionOrder-Index,Time-Index) in separate files following the file location and name convention:
 ```
 <GroupName>/<Case>-M<MotionNumber>-h<GridIndex>-p<OrderIndex>-t<TimeIndex>.txt
 ```
+In this convention, `h0` should correspond to the coarsest spatial discretization submitted and `t0` should correspond to the coarsest temporal discretization. `p0` corresponds to first-order accurate discretizations, `p1` corresponds to second-order accurate discretizations, etc.
 
 An example data file location and name would be
 ```
 AFRL/Airfoil-M1-h0-p0-t0.txt
+```
+
+The following Motion-Index convention should be used:
+- `Cylinder-M1` = 2024 Cylinder, Short-Motion
+- `Cylinder-M2` = 2024 Cylinder, Long-Motion
+- `Airfoil-M1` = 2024 Airfoil, Heaving
+- `Airfoil-M2` = 2024 Airfoil, Heaving + Pitching
+
+Groups should also submit a `README.json` in their submission folder that describes the number of elements corresponding to each `h`-index, as well as the number of solution degrees-of-freedom in a spatial element across `p`-indices:
+```
+{"h":[100,200,400], "p"=[1,8,27]}
 ```
 
 ## Data format
@@ -57,6 +69,9 @@ NaN, 8.2345720, 25.29479238, 28.2984759, NaN
 
 
 # Working group notes
+
+## 5 July, 2023
+- Discussion of more complete data-submission conventions. h,p,t resolution indicators. README.json should be included for each submission describing h,p,t levels.
 
 ## 7 June, 2023
 - Cancelled last minute due to connectivity issues.
